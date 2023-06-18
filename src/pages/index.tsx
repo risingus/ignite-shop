@@ -1,5 +1,6 @@
 import { GetStaticProps } from 'next';
 import Image from 'next/image';
+import Head from 'next/head';
 import Stripe from 'stripe';
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css';
@@ -24,7 +25,12 @@ export default function Home({ products }: HomeProps) {
     }
   })
   return (
+    <>
+      <Head>
+        <title>Home | Ignite Shop</title>
+      </Head>
     <HomeContainer ref={sliderRef} className='keen-slider'>
+
 
       {
         products.map((product) => {
@@ -42,7 +48,7 @@ export default function Home({ products }: HomeProps) {
         })
       }
     </HomeContainer>
-
+    </>
   )
 }
 
