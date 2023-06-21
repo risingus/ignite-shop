@@ -58,8 +58,6 @@ export const Product = styled('div', {
     footer: {
       transform: 'translateY(0%)',
       opacity: 1,
-
     }
-
   }
 })

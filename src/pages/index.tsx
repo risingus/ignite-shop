@@ -1,6 +1,6 @@
+import { useState, useMemo } from 'react';
 import { GetStaticProps } from 'next';
 import Image from 'next/image';
-import Head from 'next/head';
 import Stripe from 'stripe';
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css';
@@ -18,20 +18,46 @@ interface HomeProps {
 }
 
 export default function Home({ products }: HomeProps) {
-  const [sliderRef] = useKeenSlider({
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [sliderRef, sliderInstanceRef] = useKeenSlider({
+    initial: 0,
+    slideChanged(slider) {
+      setCurrentSlide(slider.track.details.rel)
+    },
     slides: {
       perView: 3,
       spacing: 48,
     }
   })
+
+  const isButtonNextSlideActive = useMemo(() => {
+    const active = sliderInstanceRef?.current?.track?.details?.slides
+      && Array.isArray(sliderInstanceRef.current.track.details.slides)
+      ? sliderInstanceRef.current.track.details.slides
+      : []
+
+    return currentSlide === active.length - 1
+
+  }, [currentSlide, sliderInstanceRef])
+
+
+  const isButtonPrevSlideActive = useMemo(() => {
+    return currentSlide === 0
+
+  }, [currentSlide])
+
+  function nextSlide() {
+    if (!sliderInstanceRef?.current) return
+    sliderInstanceRef.current?.next()
+  }
+
+  function prevSlide() {
+    if (!sliderInstanceRef?.current) return
+    sliderInstanceRef.current?.prev()
+  }
+
   return (
-    <>
-      <Head>
-        <title>Home | Ignite Shop</title>
-      </Head>
     <HomeContainer ref={sliderRef} className='keen-slider'>
-
-
       {
         products.map((product) => {
           return (
@@ -48,7 +74,7 @@ export default function Home({ products }: HomeProps) {
         })
       }
     </HomeContainer>
-    </>
+
   )
 }
 

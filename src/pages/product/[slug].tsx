@@ -1,7 +1,7 @@
+import { Button } from '@/components/Button'
 import { stripe } from '@/libs/stripe'
 import { ImageContainer, ProductContainer, ProductDetails } from '@/styles/pages/product'
 import axios from 'axios'
-import Head from 'next/head';
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
@@ -43,10 +43,6 @@ export default function Product({ product }: ProductsProps) {
   }
 
   return (
-    <>
-      <Head>
-        <title>{product.name} | Ignite shop</title>
-      </Head>
     <ProductContainer>
       <ImageContainer>
         <Image src={product.imageUrl} width={520} height={480} alt='' />
@@ -58,12 +54,11 @@ export default function Product({ product }: ProductsProps) {
 
         <p>{product.description}</p>
 
-        <button onClick={handleBuyProduct} disabled={isCreatingCheckoutSession}>
-          Comprar agora
-        </button>
+        <Button onClick={handleBuyProduct} disabled={isCreatingCheckoutSession}>
+          Colocar na sacola
+        </Button>
       </ProductDetails>
     </ProductContainer>
-    </>
   )
 }
 

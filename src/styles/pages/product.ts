@@ -4,20 +4,20 @@ import { styled } from '..';
 export const ProductContainer = styled('main', {
   display: 'grid',
   gridTemplateColumns: '1fr 1fr',
-  alignItems: 'stretch',
+  // alignItems: 'stretch',
   gap: '4rem',
   maxWidth: 1180,
   margin: '0 auto',
-
+  paddingBottom: '1rem'
 })
 
 export const ImageContainer = styled('div', {
   width: '100%',
-  maxWidth: 576,
+  maxWidth: 696,
   background: 'linear-gradient(188deg, #1ea483 0%, #7465d4 100%)',
   borderRadius: 8,
   padding: '0.25rem',
-  height: 656,
+  height: 696,
 
   display: 'flex',
   alignItems: 'center',
@@ -26,8 +26,6 @@ export const ImageContainer = styled('div', {
   img: {
     objectFit: 'cover',
   },
-
-
 })
 
 export const ProductDetails = styled('div', {
