@@ -4,7 +4,7 @@ import { styled } from '..';
 export const ProductContainer = styled('main', {
   display: 'grid',
   gridTemplateColumns: '1fr 1fr',
-  // alignItems: 'stretch',
+  alignItems: 'stretch',
   gap: '4rem',
   maxWidth: 1180,
   margin: '0 auto',
@@ -17,7 +17,7 @@ export const ImageContainer = styled('div', {
   background: 'linear-gradient(188deg, #1ea483 0%, #7465d4 100%)',
   borderRadius: 8,
   padding: '0.25rem',
-  height: 696,
+  height: 646,
 
   display: 'flex',
   alignItems: 'center',

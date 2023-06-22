@@ -1,5 +1,14 @@
-import { styled } from '@/styles'
+import { styled, keyframes } from '@/styles'
 
+const slideToLeft = keyframes({
+  '0%': { marginRight: '-30rem' },
+  '100%': { marginRight: 0 }
+})
+
+const slideToRight = keyframes({
+  '0%': { marginRight: 0 },
+  '100%': { marginRight: '-30rem' }
+})
 
 export const CartContainer = styled('div', {
   position: 'absolute',
@@ -13,13 +22,15 @@ export const CartContainer = styled('div', {
   backgroundColor: '$gray800',
   boxShadow: '-4px 0px 30px rgba(0, 0, 0, 0.8)',
   overflowX: 'auto',
-  marginRight: '-30rem',
+  animation: `${slideToRight} 0.4s forwards`,
   pointerEvents: 'none',
-  transition: 'marginRight 0.2s ease-in-out',
+  transition: 'marginRight 0.4s ease-in-out',
+  zIndex: '2',
 
   variants: {
     open: {
       true: {
+        animation: `${slideToLeft} 0.4s forwards`,
         marginRight: 0,
         pointerEvents: 'all',
       }
