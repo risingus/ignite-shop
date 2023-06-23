@@ -1,11 +1,10 @@
 import { Button } from '@/components/Button'
+import { useCart } from '@/context/cart'
 import { stripe } from '@/libs/stripe'
 import { ImageContainer, ProductContainer, ProductDetails } from '@/styles/pages/product'
-import axios from 'axios'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
 import Stripe from 'stripe'
 
 interface ProductsProps {
@@ -13,7 +12,8 @@ interface ProductsProps {
     id: string;
     name: string;
     imageUrl: string;
-    price: string;
+    price: number;
+    formatedPrice: string
     description: string
     defaultPriceId: string
   }
@@ -21,25 +21,13 @@ interface ProductsProps {
 
 
 export default function Product({ product }: ProductsProps) {
+  const { addToCart } = useCart()
   const { isFallback } = useRouter();
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
 
   if (isFallback) return <p>carregando...</p>
 
   async function handleBuyProduct() {
-    try {
-      setIsCreatingCheckoutSession(true)
-      const response = await axios.post('/api/checkout', {
-        priceId: product.defaultPriceId
-      })
-
-      const { checkoutUrl } = response.data;
-      window.location.href = checkoutUrl
-
-    } catch (error) {
-      console.dir(error);
-      setIsCreatingCheckoutSession(false)
-    }
+    addToCart(product)
   }
 
   return (
@@ -50,11 +38,11 @@ export default function Product({ product }: ProductsProps) {
 
       <ProductDetails>
         <h1>{product.name}</h1>
-        <span>{product.price}</span>
+        <span>{product.formatedPrice}</span>
 
         <p>{product.description}</p>
 
-        <Button onClick={handleBuyProduct} disabled={isCreatingCheckoutSession}>
+        <Button onClick={handleBuyProduct}>
           Colocar na sacola
         </Button>
       </ProductDetails>
@@ -85,7 +73,10 @@ export const getStaticProps: GetStaticProps<any, { slug: string }> = async ({ pa
         id: product.id,
         name: product.name,
         imageUrl: product.images[0],
-        price: new Intl.NumberFormat('pt-Br', {
+        price: Number(new Intl.NumberFormat('pt-Br', {
+          currency: 'BRL',
+        }).format((price.unit_amount || 0) / 100)),
+        formatedPrice: new Intl.NumberFormat('pt-Br', {
           style: 'currency',
           currency: 'BRL',
         }).format((price.unit_amount || 0) / 100),
